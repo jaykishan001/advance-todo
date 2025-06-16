@@ -6,17 +6,17 @@ import { generateMailFormate, sendMail } from "../utils/sendmail.js";
 
 export const registerUser = asyncHandler(async(req, res)=> {
 
-    console.log("username", username, email, password);
     const {username, fullname, email, password} = req.body;
+    console.log("username", username, email, password);
 
 
     if(!username || !fullname || !email || !password){
         return res.status(401).json(new ApiError(401, "All fields are required"))
     }
 
-   const existingUser = await User.findOne(email);
+   const existingUser = await User.findOne({email});
 
-   if(!existingUser) {
+   if(existingUser) {
     return res.status(401).json( new ApiResponse(401, null, "User Already exist!") )
    }
 
